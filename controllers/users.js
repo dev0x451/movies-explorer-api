@@ -43,15 +43,6 @@ function logout(req, res, next) {
   } catch (err) { next(err); }
 }
 
-function getUsers(req, res, next) {
-  User.find({})
-    .orFail(() => {
-      throw new NotFoundError(USERS_NOT_FOUND_MESSAGE);
-    })
-    .then((users) => res.send(users))
-    .catch(next);
-}
-
 function getUserById(req, res, next) {
   const userId = req.params.userId || req.user._id;
   User.findById(userId)
@@ -67,7 +58,7 @@ function getUserById(req, res, next) {
 
 function createUser(req, res, next) {
   const {
-    email, password, name, about, avatar,
+    email, password, name,
   } = req.body;
   if (!password) throw new BadRequestError(BAD_REQUEST_MESSAGE);
   bcrypt.hash(password, 10)
@@ -78,16 +69,11 @@ function createUser(req, res, next) {
           email,
           password: hash,
           name,
-          about,
-          avatar,
         })
           .then((user) => res.status(STATUS_OK_CREATED).send({
             _id: user._id,
             email: user.email,
             name: user.name,
-            about: user.about,
-            avatar: user.avatar,
-
           }))
           .catch((err) => {
             if (err.name === 'ValidationError') {
@@ -102,8 +88,8 @@ function createUser(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-  const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, {
+  const { email, name } = req.body;
+  User.findByIdAndUpdate(req.user._id, { email, name }, {
     new: true,
     runValidators: true,
   }).orFail(() => {
@@ -116,23 +102,6 @@ function updateUser(req, res, next) {
     });
 }
 
-function updateAvatar(req, res, next) {
-  const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, {
-    new: true,
-    runValidators: true,
-    upsert: false,
-  })
-    .orFail(() => {
-      throw new NotFoundError(USER_NOT_FOUND_MESSAGE);
-    })
-    .then((user) => res.send(user))
-    .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'ValidationError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
-      else next(err);
-    });
-}
-
 module.exports = {
-  createUser, login, logout, getUsers, getUserById, updateUser, updateAvatar,
+  createUser, login, logout, getUserById, updateUser,
 };

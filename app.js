@@ -11,7 +11,7 @@ const fs = require('fs');
 const { log } = require('console');
 
 const userRoutes = require('./routes/users');
-const cardRoutes = require('./routes/cards');
+const movieRoutes = require('./routes/movies');
 const signinRoute = require('./routes/signin');
 const signoutRoute = require('./routes/signout');
 const signupRoute = require('./routes/signup');
@@ -40,6 +40,7 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
+mongoose.set('strictQuery', true);
 mongoose.connect(MONGODB_URI, {
   autoIndex: true,
 });
@@ -61,7 +62,7 @@ app.use('/signin', signinRoute);
 app.use('/signup', signupRoute);
 app.use(auth);
 app.use('/users', userRoutes);
-app.use('/cards', cardRoutes);
+app.use('/movies', movieRoutes);
 app.use('/signout', signoutRoute);
 app.use('*', invalidRoutes);
 app.use(errorLogger); // подключаем логгер ошибок
