@@ -44,7 +44,7 @@ function logout(req, res, next) {
 }
 
 function getUserById(req, res, next) {
-  const userId = req.params.userId || req.user._id;
+  const userId = req.user._id;
   User.findById(userId)
     .orFail(() => {
       throw new NotFoundError(USER_NOT_FOUND_MESSAGE);
@@ -60,10 +60,10 @@ function createUser(req, res, next) {
   const {
     email, password, name,
   } = req.body;
-  if (!password) throw new BadRequestError(BAD_REQUEST_MESSAGE);
+  // если нет пароля либо если мы уже залогинены, то выбрасываем ошибку
+  if (!password || req.cookies.jwt) throw new BadRequestError(BAD_REQUEST_MESSAGE);
   bcrypt.hash(password, 10)
     .then(
-
       (hash) => {
         User.create({
           email,

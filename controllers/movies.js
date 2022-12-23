@@ -59,13 +59,13 @@ function createMovie(req, res, next) {
 function deleteMovie(req, res, next) {
   const { movieId } = req.params;
 
-  Movie.findOne({ _id: movieId })
+  Movie.findOne({ movieId: Number(movieId) })
     .orFail(() => {
       throw new NotFoundError(CARD_NOT_FOUND_MESSAGE);
     })
     .then((movie) => {
       if (req.user._id === movie.owner._id.toString()) {
-        Movie.findByIdAndRemove(movieId)
+        Movie.findByIdAndRemove(movie._id)
           .then((movie2) => res.status(STATUS_OK).send(movie2))
           .catch((err) => {
             if (err.name === 'CastError') next(new BadRequestError(BAD_REQUEST_MESSAGE));
