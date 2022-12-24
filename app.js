@@ -21,7 +21,7 @@ const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const {
-  PORT = 4000,
+  PORT = 5000,
   MONGODB_URI = 'mongodb://localhost:27017/moviesdb',
   SSL_CRT_FILE,
   SSL_KEY_FILE,
