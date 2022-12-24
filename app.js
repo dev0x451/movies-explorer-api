@@ -39,7 +39,8 @@ mongoose.connect(MONGODB_URI, {
 
 const options = {
   origin: [
-    'https://localhost:3000',
+    'https://localhost:3001',
+    'https://movies001.nomoredomains.club',
   ],
   credentials: true,
 };
