@@ -1,3 +1,3 @@
 # movies-explorer-api
 
-public domain: diplom.nomoredomains.domain
+API доступно по адресу: https://api.movies001.nomoredomains.club
