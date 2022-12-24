@@ -1,13 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-const https = require('https');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const { errors } = require('celebrate');
-const fs = require('fs');
 const { log } = require('console');
 
 const userRoutes = require('./routes/users');
@@ -23,15 +21,9 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const {
   PORT = 5000,
   MONGODB_URI = 'mongodb://localhost:27017/moviesdb',
-  SSL_CRT_FILE,
-  SSL_KEY_FILE,
 } = process.env;
 
-const key = fs.readFileSync(SSL_KEY_FILE);
-const cert = fs.readFileSync(SSL_CRT_FILE);
-
 const app = express();
-const server = https.createServer({ key, cert }, app);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -69,6 +61,6 @@ app.use(errorLogger); // подключаем логгер ошибок
 app.use(errors());
 app.use(handleAllErrors);
 
-server.listen(PORT, () => {
-  log(`App listening on HTTPS port ${PORT}`);
+app.listen(PORT, () => {
+  log(`App listening on port ${PORT}`);
 });
