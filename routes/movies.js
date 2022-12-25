@@ -19,13 +19,12 @@ router.post('/', celebrate({
     movieId: Joi.number().required(),
     nameRU: Joi.string().required().min(2).max(100),
     nameEN: Joi.string().required().min(2).max(100),
-    // .pattern(/http(s)?:\/\/(www.)?[a-z0-9\.\-]+\/[a-z0-9\.\-_~:\/?#\[\]@!$&'()*+,;=]+/),
   }),
 }), createMovie);
 
 router.delete('/:movieId', celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().required(),
+    movieId: Joi.string().required().length(24).hex(),
   }),
 }), deleteMovie);
 

@@ -23,9 +23,6 @@ ssl
 # Editor configuration
 .editorconfig
 
-# ESLint configuration
-.eslintrc
-
 #HTTP Requests
 requests.rest
 
