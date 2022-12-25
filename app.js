@@ -41,6 +41,7 @@ const options = {
   origin: [
     'https://localhost:3001',
     'https://movies001.nomoredomains.club',
+    'http://movies001.nomoredomains.club',
   ],
   credentials: true,
 };
