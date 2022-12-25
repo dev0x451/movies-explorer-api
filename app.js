@@ -8,20 +8,13 @@ const cors = require('cors');
 const { errors } = require('celebrate');
 const { log } = require('console');
 
-// const userRoutes = require('./routes/users');
-// const movieRoutes = require('./routes/movies');
-// const signinRoute = require('./routes/signin');
-// const signoutRoute = require('./routes/signout');
-// const signupRoute = require('./routes/signup');
-// const invalidRoutes = require('./routes/invalidURLs');
-// const auth = require('./middlewares/auth');
 const routes = require('./routes/index');
 const { handleAllErrors } = require('./errors/errors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const {
   PORT = 3000,
-  MONGODB_URI = 'mongodb://localhost:27017/moviesdb',
+  MONGODB_URI = 'mongodb://localhost:27017/bitfilmsdb',
 } = process.env;
 
 const app = express();
@@ -48,19 +41,12 @@ const options = {
 };
 
 app.use('*', cors(options));
-app.use(limiter);
 app.use(requestLogger); // подключаем логгер запросов
+app.use(limiter);
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json()); // instead of body parser
 app.use(routes);
-// app.use('/signin', signinRoute);
-// app.use('/signup', signupRoute);
-// app.use(auth);
-// app.use('/users', userRoutes);
-// app.use('/movies', movieRoutes);
-// app.use('/signout', signoutRoute);
-// app.use('*', invalidRoutes);
 app.use(errorLogger); // подключаем логгер ошибок
 app.use(errors());
 app.use(handleAllErrors);
