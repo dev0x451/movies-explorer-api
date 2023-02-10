@@ -1,31 +1,41 @@
-const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
+const router = require("express").Router();
+const { celebrate, Joi } = require("celebrate");
 const {
-  getMovies, createMovie, deleteMovie,
-} = require('../controllers/movies');
+  getMovies,
+  createMovie,
+  deleteMovie,
+} = require("../controllers/movies");
 
-router.get('/', getMovies);
+router.get("/", getMovies);
 
-router.post('/', celebrate({
-  body: Joi.object().keys({
-    country: Joi.string().required().min(2).max(30),
-    director: Joi.string().required().min(2).max(50),
-    duration: Joi.number().required(),
-    year: Joi.string().required().min(2).max(10),
-    description: Joi.string().required().min(2).max(3000),
-    image: Joi.string().required().uri(),
-    trailerLink: Joi.string().required().uri(),
-    thumbnail: Joi.string().required().uri(),
-    movieId: Joi.number().required(),
-    nameRU: Joi.string().required().min(2).max(100),
-    nameEN: Joi.string().required().min(2).max(100),
+router.post(
+  "/",
+  celebrate({
+    body: Joi.object().keys({
+      country: Joi.string().required().min(1).max(200),
+      director: Joi.string().required().min(1).max(200),
+      duration: Joi.number().required(),
+      year: Joi.string().required().min(1).max(10),
+      description: Joi.string().required().min(1).max(3000),
+      image: Joi.string().required().uri(),
+      trailerLink: Joi.string().required().uri(),
+      thumbnail: Joi.string().required().uri(),
+      movieId: Joi.number().required(),
+      nameRU: Joi.string().required().min(1).max(200),
+      nameEN: Joi.string().required().min(1).max(200),
+    }),
   }),
-}), createMovie);
+  createMovie
+);
 
-router.delete('/:movieId', celebrate({
-  params: Joi.object().keys({
-    movieId: Joi.string().required().length(24).hex(),
+router.delete(
+  "/:movieId",
+  celebrate({
+    params: Joi.object().keys({
+      movieId: Joi.string().required().length(24).hex(),
+    }),
   }),
-}), deleteMovie);
+  deleteMovie
+);
 
 module.exports = router;

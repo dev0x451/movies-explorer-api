@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const validator = require("validator");
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -27,7 +27,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validator.isURL(v),
-      message: 'DB: field is not a valid URL',
+      message: "DB: field is not a valid URL",
     },
   },
   trailerLink: {
@@ -35,7 +35,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validator.isURL(v),
-      message: 'DB: field is not a valid URL',
+      message: "DB: field is not a valid URL",
     },
   },
   thumbnail: {
@@ -43,18 +43,17 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validator.isURL(v),
-      message: 'DB: field is not a valid URL',
+      message: "DB: field is not a valid URL",
     },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "user",
     required: true,
   },
   movieId: {
     type: Number,
     required: true,
-    unique: true,
   },
   nameRU: {
     type: String,
@@ -64,7 +63,6 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
 });
 
-module.exports = mongoose.model('movie', movieSchema);
+module.exports = mongoose.model("movie", movieSchema);

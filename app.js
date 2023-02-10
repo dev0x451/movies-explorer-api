@@ -1,21 +1,19 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const cors = require('cors');
-const { errors } = require('celebrate');
-const { log } = require('console');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const cors = require("cors");
+const { errors } = require("celebrate");
+const { log } = require("console");
 
-const routes = require('./routes/index');
-const { handleAllErrors } = require('./errors/errors');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const routes = require("./routes/index");
+const { handleAllErrors } = require("./errors/errors");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
-const {
-  PORT = 3000,
-  MONGODB_URI = 'mongodb://localhost:27017/bitfilmsdb',
-} = process.env;
+const { PORT = 3000, MONGODB_URI = "mongodb://localhost:27017/bitfilmsdb" } =
+  process.env;
 
 const app = express();
 
@@ -26,21 +24,21 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-mongoose.set('strictQuery', true);
+mongoose.set("strictQuery", true);
 mongoose.connect(MONGODB_URI, {
   autoIndex: true,
 });
 
 const options = {
   origin: [
-    'https://localhost:3001',
-    'https://movies001.nomoredomains.club',
-    'http://movies001.nomoredomains.club',
+    "https://localhost:3050",
+    "https://movies001.nomoredomains.club",
+    "http://movies001.nomoredomains.club",
   ],
   credentials: true,
 };
 
-app.use('*', cors(options));
+app.use("*", cors(options));
 app.use(requestLogger); // подключаем логгер запросов
 app.use(limiter);
 app.use(helmet());
