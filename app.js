@@ -32,8 +32,7 @@ mongoose.connect(MONGODB_URI, {
 const options = {
   origin: [
     "https://localhost:3050",
-    "https://movies001.nomoredomains.club",
-    "http://movies001.nomoredomains.club",
+    "https://movies.schapov.dev"
   ],
   credentials: true,
 };
@@ -44,7 +43,7 @@ app.use(limiter);
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json()); // instead of body parser
-app.use(routes);
+app.use('/api', routes);
 app.use(errorLogger); // подключаем логгер ошибок
 app.use(errors());
 app.use(handleAllErrors);
